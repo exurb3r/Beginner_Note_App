@@ -1,5 +1,7 @@
+const { logMake } = require('../middleware/logEvents');
+
 const noteFetcher = async (req, res) => {
-    res.send('Retrieving Notes');
+    logMake(req, res);
 }
 
 const noteAdder = async (req, res) => {
