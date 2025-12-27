@@ -1,1 +1,0 @@
-I will use simple JS and React here
