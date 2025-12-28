@@ -1,9 +1,10 @@
+const Notes = require('../models/Notes');
 const { logMake, logGet } = require('../middleware/logEvents');
 
 const noteFetcher = async (req, res) => {
-    const data = await logGet();
-    res.send(data);
-    
+    const notes = await Notes.findOne({username: req.body.username});
+    if (!notes) return res.status(404).json({'message': 'user does not exists'});
+    res.json(notes)
 }
 
 const noteAdder = async (req, res) => {
