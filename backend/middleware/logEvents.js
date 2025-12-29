@@ -4,7 +4,7 @@ const fs = require('fs');
 const fsPromises = require('fs').promises;
 
 const logMake = async (name, message) => {
-    const date = `${format(new Date(), 'yyyy/MM/dd\tHH::mm:ss')}`;
+    const date = `${format(new Date(), 'yyyy/MM/dd\tHH:mm:ss')}`;
     const messageLog = `${date}, User: ${name.username} Event: ${message}\n`;
     try{
         if(!fs.existsSync(path.join(__dirname, '..', 'logs'))){

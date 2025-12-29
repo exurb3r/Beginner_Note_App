@@ -1,10 +1,45 @@
 import React, { useState, useEffect} from 'react';
 
 function NoteApp(){
-    const username = "Roven";
+    const username = "exurb3r";
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [noteList, setNoteList] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const [editingId, setEditingId] = useState(null);
+    const [editTitle, setEditTitle] = useState("");
+    const [editDescription, setEditDescription] = useState("");
+
+
+
+    async function getNote(){
+        try{
+            setLoading(true);
+            const response = await fetch(`http://localhost:3500/noteHandler/get?username=${username}`);
+
+            if(!response.ok){
+                throw new Error('Failed to fetch notes');
+            }
+
+            const data = await response.json();
+            setNoteList(data.notes || []) ;
+
+        } catch (err){
+            console.error(err);
+            setNoteList([]);
+        } finally {
+            setLoading(false);
+        }
+    
+    }
+
+    useEffect(() => {
+        getNote();
+    }, []);
+
+
 
     function handleTitleChange(event){
         setTitle(c => c = event.target.value);
@@ -43,9 +78,10 @@ function NoteApp(){
                 }
 
                 const updates = await response.json();
-                console.log(updates);
                 setTitle('');
                 setDescription('');
+
+                setNoteList(updates.notes);
 
             } catch (err){
                 console.error(err);
@@ -54,26 +90,107 @@ function NoteApp(){
         sendNotes();
     }
 
+    async function deleteNote(username, noteId) {
+        const toDelete = {username, noteId}
+        try{
+            const response = await fetch('http://localhost:3500/noteHandler/delete',{
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(toDelete)
+            });
 
+            if(!response.ok){
+                throw new Error('Failed to delete note');
+            }
 
+            const updates = await response.json();
+            setNoteList(updates.notes);
 
+        } catch (err){
+            console.error(err);
+        }
+    
+    }
 
+    async function updateNote(noteId) {
+        const toBeUpdated = { username, noteId, title: editTitle, description: editDescription}
+        try{
+            const response = await fetch('http://localhost:3500/noteHandler/put', {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(toBeUpdated)
+                
+                })
+
+            if(!response.ok){
+                throw new Error('Failed to delete note');
+            }
+
+            const updates = await response.json();
+            setNoteList(updates.notes);
+            setEditingId(null);
+        } catch (err){
+            console.error(err.message)
+        } finally {
+
+        }
+        
+    }
 
     return(
-    <div>
-        <div>
-            <h1>Notes Application</h1>
+        <div className='noteAPP'>
+            <div className=''>
+                <h1>Notes Application</h1>
+            </div>
+            <div className=''>
+                <form onSubmit={addNotes}>
+                    <input type='text' placeholder='Your Title' value={title} onChange={(e) => handleTitleChange(e)}></input>
+                    <br/>
+                    <textarea placeholder='Description' value={description} onChange={(e) => handleDescriptionChange(e)}></textarea>
+                    <br/>
+                    <button type='submit'> Add Notes</button>
+                </form>
+            </div>
+            
+            <div>
+                {loading ? (<p> Loading notes...</p>): 
+                (<ol>
+                    {noteList.map(note => (
+                        <li key={note._id}>
+                        {editingId === note._id ? (
+                            <div className="edit-notes">
+                               <h2><input value={editTitle} onChange={(e) => setEditTitle(e.target.value)}/></h2>
+                                <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)}/>
+
+                                <button onClick={() => setEditingId(null)}>Cancel</button>
+                                <button onClick={() => updateNote(note._id)}>Confirm</button>
+                            </div>
+                        ) : (
+                            <div className="show-notes">
+                                <h2>{note.title}</h2><p>{new Date(note.date).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })}</p>
+                                <p>{note.description}</p>
+
+                                <button onClick={() => {
+                                    setEditingId(note._id);
+                                    setEditTitle(note.title);
+                                    setEditDescription(note.description);
+                                    }}>
+                                    Edit
+                                </button>
+                                <button onClick={() => deleteNote(username, note._id) }> Delete</button>
+                            </div>
+                        )}
+                        </li>
+                    ))}
+
+                </ol>)
+                }
+            </div>       
         </div>
-        <div>
-            <form>
-                <input type='text' placeholder='Your Title' value={title} onChange={(e) => handleTitleChange(e)}></input>
-                <br/>
-                <textarea placeholder='Description' value={description} onChange={(e) => handleDescriptionChange(e)}></textarea>
-                <br/>
-                <button onClick={(e) => addNotes(e)}> Add Notes</button>
-            </form>
-        </div>       
-    </div>
     );
 }
 export default NoteApp;

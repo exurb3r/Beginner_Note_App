@@ -3,7 +3,8 @@ const { logMake, errorLog} = require('../middleware/logEvents');
 
 const noteFetcher = async (req, res) => {
     try{
-        const { username } = req.body
+        const { username } = req.query;
+
         if (!username) return res.status(400).json({message: "Needs username"});
         const notes = await Notes.findOne({username});
         if (!notes) return res.status(404).json({'message': 'user does not exists'});
@@ -74,7 +75,8 @@ const noteEditor = async (req, res) => {
             {
                 $set: {
                     "notes.$.title": title,
-                    "notes.$.description": description
+                    "notes.$.description": description,
+                    "notes.$.date": new Date()
                 }
             },
             { new: true }
