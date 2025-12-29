@@ -12,8 +12,6 @@ function NoteApp(){
     const [editTitle, setEditTitle] = useState("");
     const [editDescription, setEditDescription] = useState("");
 
-
-
     async function getNote(){
         try{
             setLoading(true);
@@ -144,20 +142,21 @@ function NoteApp(){
     return(
         <div className='noteAPP'>
             <h1 className='noteApp-title'>Notes Application</h1>
-
-            <div className='addNotes'>
-                <form onSubmit={addNotes}>
-                    <input type='text' placeholder='Your Title' value={title} onChange={(e) => handleTitleChange(e)}></input>
-                    <br/>
-                    <textarea placeholder='Description' value={description} onChange={(e) => handleDescriptionChange(e)}></textarea>
-                    <br/>
-                    <button type='submit'> Add Notes</button>
-                </form>
-            </div>
             
             <div className='note-section'>
+                
                 {loading ? (<p> Loading notes...</p>): 
                 (<ol>
+                    <li className='note-container' id='add-section'>
+                        <div className="edit-notes">
+                            <form onSubmit={addNotes} >
+                                <h2><input type='text' placeholder='Your Title' value={title} onChange={(e) => handleTitleChange(e)}></input></h2>
+                                <textarea placeholder='Description' value={description} onChange={(e) => handleDescriptionChange(e)}></textarea>
+
+                                <button type='submit'> Add Notes</button>
+                            </form>
+                        </div>
+                    </li>
                     {noteList.map(note => (
                         <li key={note._id} className='note-container'>
                         {editingId === note._id ? (
@@ -172,7 +171,7 @@ function NoteApp(){
                             <div className="show-notes">
                                 <p className='date-tag'>{new Date(note.date).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })}</p>
                                 <h2>{note.title}</h2>
-                                <p>{note.description}</p>
+                                <p className='note-description'>{note.description}</p>
 
                                 <button onClick={() => {
                                     setEditingId(note._id);
@@ -193,5 +192,4 @@ function NoteApp(){
         </div>
     );
 }
-
 export default NoteApp;

@@ -1,5 +1,5 @@
 import './App.css'
-import NoteApp from './Notes'
+import NoteApp from './TestCopy'
 
 function App() {
 
@@ -7,6 +7,7 @@ function App() {
   return (
     <>
       <NoteApp/>
+
     </>
   )
 }

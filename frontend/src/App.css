@@ -1,59 +1,79 @@
-.noteAPP {
-    background-color: rgb(50, 50, 50);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    max-width: 90%;
-    margin: 20px;
-    color: white;
-    font-family: Helvetica, sans-serif;
-}
+
 
 .noteApp-title{
     text-align: center;
-    color: rgb(255, 255, 255);
-    margin-bottom: 20px;
 }
+
 
 .addNotes{
-    justify-content: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+ 
+}
+
+.note-section ol {
+    border: 2px solid black;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin: 40px;
+    border-radius: 15px;
+
 }
 
-.addNotes input,
-.addNotes textarea {
+.note-container{
+    list-style: none;
+
+}
+.note-container div{
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    width: 400px;
+    margin: 10px;
+}
+.note-container h2{
+    font-size: 1.5rem;
+    border-bottom: 2px solid black;
+    margin-left: 10px;
+    width: 75%;
+}
+
+.note-container input{
+    font-weight: bold;
+    font-size: 1.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 0px;
+}
+
+.note-container textarea{
     width: 100%;
-    max-width: 320px;
-}
-
-.addNotes button{
-    justify-content: right;
-    
-}
-
-
-.show-notes, .edit-notes{
-    border: 1px solid hsl(292, 100%, 10%);
-  border-radius: 10px;
-  box-shadow: 5px 5px 5px hsl(300, 76%, 72%, 0.5);
-  padding: 20px;
-  text-align: center;
-  width: 250px;
-  display: inline-block;
-  background-color: blueviolet;
-  margin: 10px;
-  float: left;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    border: none;
+    resize: vertical;
 
 }
 
-.show-notes h2, .edit-notes h2{
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
+.note-container .date-tag{
+    float: right;
+    font-size: 12px;
+}
+.note-container button{
+    margin: 10px;
+    height: 30px;
+    width: 100px;
 }
 
-.note-section li{
-    text-decoration: none;
+#add-section{
+    min-height: 70%;
+}
+
+.note-container .note-description{
+    padding: 10px;
+    font-size: 15px ;
+
 }
