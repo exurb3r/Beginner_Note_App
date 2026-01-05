@@ -8,4 +8,4 @@ router.put('/put', notesHandler.noteEditor);
 router.delete('/delete', notesHandler.noteDeleter);
 
 
-module.exports = router
+module.exports = router;

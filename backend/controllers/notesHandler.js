@@ -1,4 +1,5 @@
 const Notes = require('../models/Notes');
+const User = require('../models/Users');
 const { logMake, errorLog} = require('../middleware/logEvents');
 
 const noteFetcher = async (req, res) => {
@@ -6,8 +7,17 @@ const noteFetcher = async (req, res) => {
         const { username } = req.query;
 
         if (!username) return res.status(400).json({message: "Needs username"});
-        const notes = await Notes.findOne({username});
-        if (!notes) return res.status(404).json({'message': 'user does not exists'});
+        
+        const userFound = await User.findOne({username});
+        if (!userFound) return res.status(404).json({'message': 'user does not exists'});
+
+        let notes = await Notes.findOne({username});
+        if (!notes){
+            notes = await Notes.create({
+                username: username,
+                notes: []
+            });
+        }
 
         res.json(notes);
         logMake({username}, "Fetched Notes");

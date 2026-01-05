@@ -13,7 +13,7 @@ connectDB();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/noteHandler', require('./routes/noteRouter'));
-
+app.use('/userRegister', require('./routes/userRouter'));
 
 app.get('/home', (req, res) =>{
     res.send("Server home");
