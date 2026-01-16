@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 
 function NoteApp(){
-    const username = "Kurt";
+    const username = "Roven";
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');

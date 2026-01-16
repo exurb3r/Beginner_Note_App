@@ -1,4 +1,5 @@
 import './App.css'
+import SignUp from './SignUp'
 import NoteApp from './TestCopy'
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
   return (
     <>
       <NoteApp/>
-      <NoteApp/>
+      <SignUp/>
 
 
     </>
